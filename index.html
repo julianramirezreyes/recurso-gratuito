@@ -14,11 +14,11 @@
   </style>
 </head>
 <body>
-  <header class="wrap top"><span class="brand"><span class="mark">∿</span> MODO VERBO</span><span id="resourceHeader">Recursos para hablar mejor</span></header>
+  <header class="wrap top"><span class="brand"><span class="mark">∿</span> MODO VERBO</span></header>
   <main class="wrap">
     <div id="inicio" class="resource-page">
       <section class="home-hero" aria-labelledby="home-title">
-        <p class="eyebrow">Modo Verbo · Recursos gratuitos</p>
+        <p class="eyebrow">Modo Verbo · Practica a tu ritmo</p>
         <h1 id="home-title">Tu voz tiene más posibilidades de las que crees.</h1>
         <p class="home-intro">A veces sabes lo que quieres decir, pero la frase no aparece. O aparece demasiado tarde. Aquí puedes practicar con calma: encontrar otras palabras, ganar claridad y volver a intentarlo.</p>
       </section>
@@ -205,7 +205,6 @@
         el(id).hidden=id!==selected;
       }
       const names={inicio:'Recursos para hablar mejor',trabalenguas:'Biblioteca de trabalenguas',frases:'Frases para hablar mejor'};
-      el('resourceHeader').textContent=selected==='inicio'?'Recursos gratuitos':selected==='frases'?'Biblioteca de expresiones':'Biblioteca de articulación';
       document.title=names[selected]+' | Modo Verbo';
     }
     window.addEventListener('hashchange',()=>{showResource();window.scrollTo(0,0)});renderPhrases();nextPractice();showResource();
