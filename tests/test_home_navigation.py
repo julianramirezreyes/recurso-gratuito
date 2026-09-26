@@ -75,7 +75,7 @@ class HomeNavigationTests(unittest.TestCase):
             re.compile(
                 r"const names=\{inicio:'Recursos para hablar mejor',"
                 r"trabalenguas:'Biblioteca de trabalenguas',"
-                r"frases:'Frases para hablar mejor'\}"
+                r"frases:'Frases para hablar mejor',"
             ),
         )
 
