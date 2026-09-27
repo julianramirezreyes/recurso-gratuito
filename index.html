@@ -34,6 +34,81 @@
     .home-card p{max-width:760px;margin:0}
     .home-card .home-arrow{flex:0 0 auto;margin-top:0;white-space:nowrap}
     @media(max-width:640px){.home-card{flex-direction:column;align-items:flex-start;gap:18px;min-height:220px;padding:24px}.home-card .home-arrow{white-space:normal}}
+    .recommendation-action {
+      border: 1px solid var(--orange);
+      border-radius: 999px;
+      background: var(--orange);
+      color: #160b07;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .recommendation-action:hover,
+    .recommendation-action:focus-visible {
+      background: #ff7b4e;
+      outline: 2px solid var(--paper);
+      outline-offset: 3px;
+    }
+    .recommendation-status {
+      min-height: 1.5em;
+      margin: 16px 0;
+      color: var(--muted);
+    }
+    .recommendation-results {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0 0;
+    }
+    .recommendation-results[hidden] {
+      display: none;
+    }
+    .recommendation-results h2 {
+      margin: 0 0 4px;
+      font-size: clamp(25px, 3.5vw, 36px);
+    }
+    .recommendation-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    #recommendationCards {
+      display: grid;
+      gap: 14px;
+    }
+    .recommendation-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #22221f;
+    }
+    .recommendation-card h3 {
+      margin: 4px 0 12px;
+      font-size: 21px;
+    }
+    .recommendation-card p {
+      margin: 8px 0;
+    }
+    .recommendation-label {
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .recommendation-source {
+      display: inline-block;
+      margin-top: 8px;
+      color: #ffd0bd;
+      text-underline-offset: 3px;
+    }
+    .recommendation-caveat {
+      padding: 10px 12px;
+      border-left: 3px solid var(--orange);
+      background: #292721;
+      color: var(--muted);
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -121,7 +196,14 @@
           <label class="signal"><input type="checkbox"> Mi voz tiembla o pierde volumen.</label>
           <label class="signal"><input type="checkbox"> Me cuesta hablar frente a otras personas.</label>
         </fieldset>
-        <p class="diagnostic-next"><strong>Elige una señal para empezar.</strong> Escucha un fragmento y anota un ejemplo concreto. Esa será tu referencia para comparar después; no es un examen ni un diagnóstico clínico.</p>
+        <p class="diagnostic-next"><strong>Elige las señales que quieras trabajar.</strong> Escucha un fragmento y anota un ejemplo concreto para compararlo después; luego pulsa «Ver mis recomendaciones». No es un examen ni un diagnóstico clínico.</p>
+        <button class="recommendation-action" id="showRecommendations" type="button">Ver mis recomendaciones</button>
+        <p class="recommendation-status" id="recommendationStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+        <section class="recommendation-results" id="recommendationResults" aria-labelledby="recommendationHeading" hidden>
+          <h2 id="recommendationHeading" tabindex="-1">Prácticas para empezar</h2>
+          <p class="recommendation-note">Estas prácticas de 3–5 minutos son adaptaciones prácticas inspiradas en las fuentes enlazadas; no son protocolos clínicamente validados ni sustituyen orientación profesional.</p>
+          <div id="recommendationCards"></div>
+        </section>
       </section>
     </div>
     <aside class="ebook-cta" aria-labelledby="ebook-cta-title">
@@ -273,5 +355,6 @@
     }
     window.addEventListener('hashchange',()=>{showResource();window.scrollTo(0,0)});renderPhrases();nextPractice();showResource();
   </script>
+  <script src="speaking-recommendations.js"></script>
 </body>
 </html>
