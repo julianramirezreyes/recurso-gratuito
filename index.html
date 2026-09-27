@@ -13,6 +13,17 @@
     .home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-card--soon{border-style:dashed;background:#1a1a18;cursor:default}.home-card--soon:hover{transform:none;border-color:var(--line)}.home-soon-label{margin-top:auto;color:var(--orange);font-size:14px;font-weight:800}.resource-back{display:inline-flex;align-items:center;margin-top:28px;padding:10px 15px;border:1px solid var(--line);border-radius:999px;color:var(--paper);font-size:14px;font-weight:700;text-decoration:none}.resource-back:hover,.resource-back:focus-visible{border-color:var(--orange);color:var(--orange)}@media(max-width:900px){.home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.home-grid{grid-template-columns:1fr}.resource-back{margin-top:20px}}
     .home-card--soon{position:relative;isolation:isolate;overflow:hidden;border-style:solid;border-color:#5b4b3f;background:#201c19}.home-card--soon::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#181614b8,#181614db 72%);z-index:1}.home-soon-preview{position:absolute;inset:12px -12px -12px 18px;padding:32px 28px;border-radius:16px;background:var(--paper);filter:blur(6px);transform:rotate(-5deg) scale(1.05);opacity:.86;z-index:0}.home-soon-preview span{display:block;border-radius:8px;background:#24211d}.home-soon-preview .preview-kicker{width:30%;height:12px;background:var(--orange);margin-bottom:27px}.home-soon-preview .preview-title{width:75%;height:32px;margin-bottom:20px}.home-soon-preview .preview-line{width:88%;height:10px;margin-bottom:13px;background:#8e8980}.home-soon-preview .preview-line-short{width:63%}.home-soon-preview .preview-pill{width:48%;height:35px;margin-top:40px;border-radius:999px;background:var(--orange)}.home-soon-content{position:relative;z-index:2;display:flex;flex-direction:column;flex:1}.home-card--soon .home-soon-label{display:inline-block;align-self:flex-start;padding:8px 12px;border:1px solid #ad7052;border-radius:999px;background:#231b17;color:#ff9369}.home-card--soon:hover{border-color:#5b4b3f}
     .guide-intro{max-width:760px;color:var(--muted);font-size:18px}.guide-diagnostic{max-width:850px;padding:clamp(22px,4vw,38px);margin:8px 0 48px;border:1px solid var(--line);border-radius:22px;background:#1a1a18}.guide-diagnostic h2{font-size:clamp(28px,4vw,42px)}.diagnostic-prompts{display:grid;gap:10px;padding-left:24px;margin:24px 0}.diagnostic-prompts li{padding:14px 16px;border-radius:12px;background:#24231f}.diagnostic-prompts strong,.diagnostic-prompts span{display:block}.diagnostic-prompts span{color:var(--muted);font-size:14px;margin-top:4px}.diagnostic-signals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border:0;padding:0;margin:24px 0}.diagnostic-signals legend{font-weight:800;margin-bottom:12px}.diagnostic-signals .signal{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;color:var(--paper)}.diagnostic-signals input{accent-color:var(--orange);margin-top:5px}.diagnostic-signals input:focus-visible{outline:2px solid var(--orange);outline-offset:3px}.diagnostic-next{padding:15px 17px;background:#292721;border-left:3px solid var(--orange);border-radius:5px}.diagnostic-next strong{display:block;color:var(--paper)}@media(max-width:640px){.guide-intro{font-size:16px}.diagnostic-signals{grid-template-columns:1fr}.diagnostic-prompts{padding-left:20px}}
+    .featured-resource{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:25px;margin:0 0 30px;padding:clamp(24px,5vw,52px);border:1px solid rgba(250,90,37,.55);border-radius:28px;background:radial-gradient(ellipse at 90% 8%,rgba(250,90,37,.16),transparent 42%),linear-gradient(135deg,#24211d,#171716 72%)}
+    .featured-resource::after{position:absolute;z-index:-1;top:-132px;right:-126px;width:310px;aspect-ratio:1;border:1px solid rgba(250,90,37,.28);border-radius:50%;box-shadow:0 0 0 22px rgba(250,90,37,.04),0 0 0 46px rgba(250,90,37,.035),0 0 0 70px rgba(250,90,37,.025);content:"";pointer-events:none}
+    .featured-resource__copy{max-width:730px}
+    .featured-resource__badge{display:inline-flex;align-items:center;gap:9px;margin:0;color:var(--orange);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+    .featured-resource__badge::before{width:7px;height:7px;border-radius:50%;background:currentColor;content:""}
+    .featured-resource h2{max-width:680px;margin:15px 0 14px;font-size:clamp(34px,5vw,58px);line-height:.98}
+    .featured-resource__description{max-width:620px;margin:0;color:var(--muted);font-size:clamp(16px,2vw,19px)}
+    .featured-resource__cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:50px;padding:13px 20px;border:1px solid var(--orange);border-radius:999px;background:var(--orange);color:#160b07;font-weight:900;text-align:center;text-decoration:none;transition:background .2s ease,transform .2s ease}
+    .featured-resource__cta:hover{transform:translateY(-2px);background:#ff7548}
+    .featured-resource__cta:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
+    @media(min-width:760px){.featured-resource{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:36px}.featured-resource__cta{width:auto;flex:0 0 auto}}
   </style>
 </head>
 <body>
@@ -23,6 +34,14 @@
         <p class="eyebrow">Modo Verbo · Practica a tu ritmo</p>
         <h1 id="home-title">Tu voz tiene más posibilidades de las que crees.</h1>
         <p class="home-intro">A veces sabes lo que quieres decir, pero la frase no aparece. O aparece demasiado tarde. Aquí puedes practicar con calma: encontrar otras palabras, ganar claridad y volver a intentarlo.</p>
+      </section>
+      <section class="featured-resource" aria-labelledby="featured-resource-title">
+        <div class="featured-resource__copy">
+          <p class="featured-resource__badge">Nuevo recurso</p>
+          <h2 id="featured-resource-title">Cómo mejorar tu forma de hablar</h2>
+          <p class="featured-resource__description">Empieza con un diagnóstico breve para reconocer qué quieres trabajar. La guía completa de práctica aún está en preparación.</p>
+        </div>
+        <a class="featured-resource__cta" href="#guia">Comenzar el diagnóstico <span aria-hidden="true">↗</span></a>
       </section>
       <section class="home-resources" aria-labelledby="home-resources-title">
         <p class="tag">Empieza por donde quieras</p>
