@@ -6,7 +6,7 @@
   } else {
     root.SpeakingRecommendations = api;
     if (root.document?.getElementById('showRecommendations')) {
-      api.init(root.document);
+      api.init(root.document, root);
     }
   }
 })(typeof window === 'undefined' ? globalThis : window, function () {
@@ -97,14 +97,27 @@
       </article>`;
   }
 
-  function init(document) {
+  function init(document, windowObject) {
     const checkboxes = [...document.querySelectorAll('#diagnostico .diagnostic-signals input[type="checkbox"]')];
     const button = document.getElementById('showRecommendations');
     const results = document.getElementById('recommendationResults');
     const heading = document.getElementById('recommendationHeading');
     const cards = document.getElementById('recommendationCards');
     const status = document.getElementById('recommendationStatus');
+    const contextualEbookCue = document.getElementById('contextualEbookCue');
+    const sharedEbookCta = document.getElementById('sharedEbookCta');
+    const sharedEbookCtaHeading = document.getElementById('ebook-cta-title');
+    const scrollToSharedEbookCta = document.getElementById('scrollToSharedEbookCta');
     let hasRequestedResults = false;
+
+    scrollToSharedEbookCta.addEventListener('click', () => {
+      const prefersReducedMotion = windowObject?.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      sharedEbookCta.scrollIntoView({
+        behavior: prefersReducedMotion ? 'instant' : 'smooth',
+        block: 'start',
+      });
+      sharedEbookCtaHeading.focus({ preventScroll: true });
+    });
 
     button.addEventListener('click', () => {
       hasRequestedResults = true;
@@ -113,12 +126,14 @@
       if (selected.length === 0) {
         cards.innerHTML = '';
         results.hidden = true;
+        contextualEbookCue.hidden = true;
         status.textContent = 'Marca al menos una señal para ver tus recomendaciones.';
         return;
       }
 
       cards.innerHTML = selected.map(({ recommendation, index }) => renderCard(recommendation, index)).join('');
       results.hidden = false;
+      contextualEbookCue.hidden = false;
       status.textContent = `Se muestran ${selected.length} ${selected.length === 1 ? 'recomendación' : 'recomendaciones'} personalizadas.`;
       heading.focus();
     });
@@ -128,6 +143,7 @@
 
       cards.innerHTML = '';
       results.hidden = true;
+      contextualEbookCue.hidden = true;
       status.textContent = 'Cambiaste la selección. Vuelve a pulsar «Ver mis recomendaciones» para actualizar los resultados.';
       hasRequestedResults = false;
     }));

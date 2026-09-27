@@ -35,6 +35,8 @@
     .home-card .home-arrow{flex:0 0 auto;margin-top:0;white-space:nowrap}
     @media(max-width:640px){.home-card{flex-direction:column;align-items:flex-start;gap:18px;min-height:220px;padding:24px}.home-card .home-arrow{white-space:normal}}
     .recommendation-action {
+      display: block;
+      margin-inline: auto;
       border: 1px solid var(--orange);
       border-radius: 999px;
       background: var(--orange);
@@ -108,6 +110,65 @@
       background: #292721;
       color: var(--muted);
       font-size: 14px;
+    }
+    .contextual-ebook-cue {
+      position: relative;
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid rgba(212, 175, 55, .7);
+      border-radius: 16px;
+      background: linear-gradient(135deg, #20201e, #191917);
+      text-align: center;
+      cursor: pointer;
+    }
+    .contextual-ebook-cue[hidden] {
+      display: none !important;
+    }
+    .contextual-ebook-cue .tag,
+    .contextual-ebook-cue h3,
+    .contextual-ebook-cue p {
+      margin: 0;
+    }
+    .contextual-ebook-cue h3 {
+      font-size: 22px;
+    }
+    .ebook-cue-arrows {
+      display: grid;
+      justify-items: center;
+      color: #d4af37;
+      line-height: .6;
+      animation: ebook-cue-bob 1.8s ease-in-out infinite;
+    }
+    .ebook-cue-arrows span:nth-child(2) {
+      opacity: .55;
+    }
+    .contextual-ebook-cue:hover {
+      border-color: #f0d77b;
+    }
+    .contextual-ebook-cue:focus-within {
+      outline: 3px solid var(--paper);
+      outline-offset: 4px;
+    }
+    .ebook-cue-link {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border: 0;
+      border-radius: inherit;
+      background: transparent;
+      opacity: 0;
+      cursor: pointer;
+    }
+    @keyframes ebook-cue-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ebook-cue-arrows {
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -203,13 +264,20 @@
           <h2 id="recommendationHeading" tabindex="-1">Prácticas para empezar</h2>
           <p class="recommendation-note">Estas prácticas de 3–5 minutos son adaptaciones prácticas inspiradas en las fuentes enlazadas; no son protocolos clínicamente validados ni sustituyen orientación profesional.</p>
           <div id="recommendationCards"></div>
+          <aside class="contextual-ebook-cue" id="contextualEbookCue" aria-labelledby="contextualEbookCueTitle" hidden>
+            <p class="tag">Sigue practicando</p>
+            <h3 id="contextualEbookCueTitle">¿Quieres seguir practicando?</h3>
+            <p>Desliza un poco más para descubrir Elocuencia sin miedo.</p>
+            <div class="ebook-cue-arrows" aria-hidden="true"><span>⌄</span><span>⌄</span></div>
+            <button class="ebook-cue-link" id="scrollToSharedEbookCta" type="button" aria-label="Bajar al ebook Elocuencia sin miedo"></button>
+          </aside>
         </section>
       </section>
     </div>
-    <aside class="ebook-cta" aria-labelledby="ebook-cta-title">
+    <aside class="ebook-cta" id="sharedEbookCta" aria-labelledby="ebook-cta-title">
       <div class="ebook-copy">
         <p class="tag">Elocuencia sin miedo · Ebook</p>
-        <h2 id="ebook-cta-title">Haz que tus ideas lleguen con <em>claridad.</em></h2>
+        <h2 id="ebook-cta-title" tabindex="-1">Haz que tus ideas lleguen con <em>claridad.</em></h2>
         <p>Historias, ejemplos y ejercicios para ordenar lo que piensas y expresarlo en conversaciones reales.</p>
         <a class="ebook-button" href="https://modoverbo.vercel.app/">Explora el ebook →</a>
       </div>
