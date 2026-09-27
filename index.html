@@ -24,6 +24,13 @@
     .featured-resource__cta:hover{transform:translateY(-2px);background:#ff7548}
     .featured-resource__cta:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
     @media(min-width:760px){.featured-resource{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:36px}.featured-resource__cta{width:auto;flex:0 0 auto}}
+    .home-grid{grid-template-columns:minmax(0,1fr);gap:18px}
+    .home-card{flex-direction:row;align-items:center;gap:clamp(20px,4vw,40px);min-height:200px;padding:clamp(24px,3vw,36px)}
+    .home-card__content{flex:1;min-width:0}
+    .home-card h3{margin:12px 0 10px}
+    .home-card p{max-width:760px;margin:0}
+    .home-card .home-arrow{flex:0 0 auto;margin-top:0;white-space:nowrap}
+    @media(max-width:640px){.home-card{flex-direction:column;align-items:flex-start;gap:18px;min-height:220px;padding:24px}.home-card .home-arrow{white-space:normal}}
   </style>
 </head>
 <body>
@@ -47,12 +54,12 @@
         <p class="tag">Empieza por donde quieras</p>
         <h2 id="home-resources-title">Elige cómo empezar.</h2>
         <div class="home-grid">
-          <a class="home-card" href="#trabalenguas"><span class="tag">01 · Dicción</span><h3>Trabalenguas</h3><p>Entrena los sonidos, el ritmo y el control al hablar. Ve a tu paso: la claridad importa más que la velocidad.</p><span class="home-arrow">Practicar dicción ↗</span></a>
-          <a class="home-card" href="#frases"><span class="tag">02 · Expresión</span><h3>Frases para hablar mejor</h3><p>Explora otras formas de responder, discrepar, pedir algo o poner un límite sin perder tu manera de hablar.</p><span class="home-arrow">Explorar frases ↗</span></a>
-          <a class="home-card" href="#guia"><span class="tag">03 · Guía práctica</span><h3>Cómo mejorar tu forma de hablar</h3><p>Identifica qué quieres trabajar y empieza con ejercicios breves para hablar con más claridad y fluidez.</p><span class="home-arrow">Empezar el diagnóstico ↗</span></a>
+          <a class="home-card" href="#trabalenguas"><div class="home-card__content"><span class="tag">01 · Dicción</span><h3>Trabalenguas</h3><p>Entrena los sonidos, el ritmo y el control al hablar. Ve a tu paso: la claridad importa más que la velocidad.</p></div><span class="home-arrow">Practicar dicción ↗</span></a>
+          <a class="home-card" href="#frases"><div class="home-card__content"><span class="tag">02 · Expresión</span><h3>Frases para hablar mejor</h3><p>Explora otras formas de responder, discrepar, pedir algo o poner un límite sin perder tu manera de hablar.</p></div><span class="home-arrow">Explorar frases ↗</span></a>
+          <a class="home-card" href="#guia"><div class="home-card__content"><span class="tag">03 · Guía práctica</span><h3>Cómo mejorar tu forma de hablar</h3><p>Identifica qué quieres trabajar y empieza con ejercicios breves para hablar con más claridad y fluidez.</p></div><span class="home-arrow">Empezar el diagnóstico ↗</span></a>
           <article class="home-card home-card--soon">
             <div class="home-soon-preview" aria-hidden="true"><span class="preview-kicker"></span><span class="preview-title"></span><span class="preview-line"></span><span class="preview-line preview-line-short"></span><span class="preview-pill"></span></div>
-            <div class="home-soon-content"><span class="tag">04 · En camino</span><h3>Próximamente</h3><p>Estamos preparando una nueva práctica. Por ahora, esta sección aún no está disponible.</p><span class="home-soon-label">Aún no disponible</span></div>
+            <div class="home-soon-content home-card__content"><span class="tag">04 · En camino</span><h3>Próximamente</h3><p>Estamos preparando una nueva práctica. Por ahora, esta sección aún no está disponible.</p><span class="home-soon-label">Aún no disponible</span></div>
           </article>
         </div>
       </section>

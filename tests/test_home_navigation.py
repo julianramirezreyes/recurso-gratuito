@@ -50,6 +50,67 @@ class PageParser(HTMLParser):
             self.home_eyebrow.append(text)
 
 
+class HomeCatalogParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.cards = []
+        self.current = None
+        self.depth = 0
+        self.capture_heading = False
+        self.capture_status = False
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = attrs.get("class", "").split()
+        if self.current is None and tag in {"a", "article"} and "home-card" in classes:
+            self.current = {
+                "tag": tag,
+                "href": attrs.get("href"),
+                "classes": classes,
+                "number": None,
+                "heading": [],
+                "status": [],
+            }
+            self.depth = 1
+            return
+        if self.current is None:
+            return
+        self.depth += 1
+        if tag == "h3":
+            self.capture_heading = True
+        if "home-soon-label" in classes:
+            self.capture_status = True
+        if "tag" in classes and self.current["number"] is None:
+            self.current["number"] = True
+
+    def handle_endtag(self, tag):
+        if self.current is None:
+            return
+        if tag == "h3":
+            self.capture_heading = False
+        if self.capture_status and tag == "span":
+            self.capture_status = False
+        self.depth -= 1
+        if self.depth == 0:
+            self.cards.append(self.current)
+            self.current = None
+
+    def handle_data(self, data):
+        if self.current is None:
+            return
+        text = data.strip()
+        if not text:
+            return
+        if self.capture_heading:
+            self.current["heading"].append(text)
+        if self.capture_status:
+            self.current["status"].append(text)
+        if self.current["number"] is True:
+            match = re.match(r"(\d{2})\s*·", text)
+            if match:
+                self.current["number"] = match.group(1)
+
+
 class HomeNavigationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -68,6 +129,22 @@ class HomeNavigationTests(unittest.TestCase):
         route_ids = {"inicio", "trabalenguas", "frases"}
         self.assertTrue(route_ids.issubset(self.page.ids))
         self.assertTrue(route_ids.issubset(set(self.page.fragments)))
+
+    def test_home_catalog_keeps_numbered_order_routes_and_non_clickable_coming_soon_item(self):
+        catalog = HomeCatalogParser()
+        catalog.feed(self.html)
+
+        self.assertEqual(
+            ["01", "02", "03", "04"],
+            [card["number"] for card in catalog.cards],
+        )
+        self.assertEqual(
+            ["#trabalenguas", "#frases", "#guia", None],
+            [card["href"] for card in catalog.cards],
+        )
+        self.assertEqual("article", catalog.cards[3]["tag"])
+        self.assertIn("home-card--soon", catalog.cards[3]["classes"])
+        self.assertIn("Aún no disponible", " ".join(catalog.cards[3]["status"]))
 
     def test_route_specific_document_titles_remain_unchanged(self):
         self.assertRegex(

@@ -14,6 +14,7 @@ class SpeakingGuideParser(HTMLParser):
         self.fragments = []
         self.home_cards = []
         self.in_home_grid = False
+        self.home_grid_depth = 0
         self.current_card = None
         self.current_heading = False
         self.current_paragraph = False
@@ -36,6 +37,10 @@ class SpeakingGuideParser(HTMLParser):
             self.fragments.append(attrs["href"][1:])
         if tag == "div" and "home-grid" in classes:
             self.in_home_grid = True
+            self.home_grid_depth = 1
+            return
+        if self.in_home_grid:
+            self.home_grid_depth += 1
         if self.in_home_grid and tag in {"a", "article"} and "home-card" in classes:
             self.current_card = {"href": attrs.get("href"), "text": []}
         if tag == "div" and attrs.get("id") == "guia":
@@ -64,8 +69,10 @@ class SpeakingGuideParser(HTMLParser):
             self.current_prompt = False
         if tag == "label":
             self.current_signal = False
-        if tag == "div" and self.in_home_grid:
-            self.in_home_grid = False
+        if self.in_home_grid:
+            self.home_grid_depth -= 1
+            if self.home_grid_depth == 0:
+                self.in_home_grid = False
         if tag == "div" and self.in_guide:
             self.in_guide = False
         if tag == "section" and self.in_diagnostic:
