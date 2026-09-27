@@ -1,4 +1,5 @@
 import hashlib
+import re
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
@@ -74,15 +75,46 @@ class EbookPromotionTests(unittest.TestCase):
     def test_ebook_cta_keeps_the_confirmed_destination(self):
         self.assertIn(LANDING_URL, self.card.links)
 
-    def test_promotion_uses_one_flat_local_cover(self):
+    def test_promotion_layers_a_decorative_local_interior_preview(self):
         image_path = ROOT / COVER_PATH
         self.assertTrue(image_path.is_file())
         image = image_path.read_bytes()
         versioned_path = f"{COVER_PATH}?v={hashlib.sha256(image).hexdigest()[:8]}"
-        self.assertEqual([(versioned_path, "Portada del ebook Elocuencia sin miedo")], self.card.images)
+        preview_path = ROOT / "assets/ebook/preview-07.webp"
+        self.assertTrue(preview_path.is_file())
+        self.assertLess(preview_path.stat().st_size, 100_000)
+        self.assertEqual(
+            [
+                (versioned_path, "Portada del ebook Elocuencia sin miedo"),
+                ("assets/ebook/preview-07.webp", ""),
+            ],
+            self.card.images,
+        )
         self.assertGreater(len(image), 12)
         self.assertEqual(b"RIFF", image[:4])
         self.assertEqual(b"WEBP", image[8:12])
+
+    def test_promotion_copy_centers_only_at_mobile_widths(self):
+        self.assertRegex(self.html, r"\.ebook-copy\s*\{[^}]*text-align:\s*left")
+        self.assertRegex(
+            self.html,
+            r"@media\s*\(max-width:\s*640px\)\s*\{[^}]*\.ebook-copy\s*\{[^}]*text-align:\s*center",
+        )
+
+    def test_preview_exposes_a_recognizable_page_area_at_mobile_and_desktop_widths(self):
+        preview_rule = re.search(r"\.ebook-preview\s*\{([^}]*)\}", self.html)
+        self.assertIsNotNone(preview_rule)
+        preview_width = re.search(r"width:\s*([\d.]+)%", preview_rule.group(1))
+        preview_offset = re.search(r"right:\s*-([\d.]+)%", preview_rule.group(1))
+        self.assertIsNotNone(preview_width)
+        self.assertIsNotNone(preview_offset, "The preview needs a deliberate offset beyond the cover edge.")
+
+        width_ratio = float(preview_width.group(1)) / 100
+        offset_ratio = float(preview_offset.group(1)) / 100
+        for figure_width, cover_right in ((230, 214), (300, 282)):
+            exposed_width = figure_width * (1 + offset_ratio) - cover_right
+            exposed_fraction = exposed_width / (figure_width * width_ratio)
+            self.assertGreaterEqual(exposed_fraction, 0.25)
 
 
 if __name__ == "__main__":
