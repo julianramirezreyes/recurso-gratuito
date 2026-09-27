@@ -146,6 +146,48 @@ class FeaturedResourceTests(unittest.TestCase):
         self.assertRegex(reduced_card, r"animation\s*:\s*none\b")
         self.assertRegex(reduced_card, r"box-shadow\s*:\s*[^;]+rgba\(")
 
+    def test_featured_sheen_is_layered_over_card_background_and_under_content(self):
+        css = "\n".join(self.page.styles)
+        card_rule = css_block(css, ".featured-resource") or ""
+        sheen_rule = css_block(css, ".featured-resource::before")
+        copy_rule = css_block(css, ".featured-resource__copy") or ""
+        cta_rule = css_block(css, ".featured-resource__cta") or ""
+
+        self.assertRegex(card_rule, r"overflow\s*:\s*hidden\b")
+        self.assertIsNotNone(sheen_rule, "The featured card needs a dedicated sheen layer")
+        self.assertRegex(sheen_rule or "", r"position\s*:\s*absolute\b")
+        self.assertRegex(sheen_rule or "", r"pointer-events\s*:\s*none\b")
+        self.assertRegex(sheen_rule or "", r"z-index\s*:\s*0\b")
+        self.assertRegex(sheen_rule or "", r"linear-gradient\([^;]*transparent[^;]*rgba\(")
+        sweep = re.search(
+            r"animation\s*:\s*featured-resource-sheen\s+([\d.]+)s\b",
+            sheen_rule or "",
+        )
+        self.assertIsNotNone(sweep)
+        self.assertGreaterEqual(float(sweep.group(1)), 6)
+        band_width = re.search(r"width\s*:\s*([\d.]+)%", sheen_rule or "")
+        self.assertIsNotNone(band_width)
+        self.assertLess(float(band_width.group(1)), 40)
+        self.assertRegex(copy_rule, r"position\s*:\s*relative\b")
+        self.assertRegex(copy_rule, r"z-index\s*:\s*1\b")
+        self.assertRegex(cta_rule, r"position\s*:\s*relative\b")
+        self.assertRegex(cta_rule, r"z-index\s*:\s*1\b")
+
+        keyframes = css_block(css, "@keyframes featured-resource-sheen") or ""
+        self.assertRegex(keyframes, r"transform\s*:\s*translateX\(")
+        self.assertIn("opacity:", keyframes)
+        self.assertNotRegex(keyframes, r"\b(?:width|height|padding|border-width)\s*:")
+
+        reduced_motion = re.search(
+            r"@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)\s*\{",
+            css,
+        )
+        self.assertIsNotNone(reduced_motion)
+        reduced_block = css_block_at(css, reduced_motion.start()) if reduced_motion else ""
+        reduced_sheen = css_block(reduced_block or "", ".featured-resource::before")
+        self.assertIsNotNone(reduced_sheen)
+        self.assertRegex(reduced_sheen or "", r"animation\s*:\s*none\b")
+
 
 if __name__ == "__main__":
     unittest.main()
